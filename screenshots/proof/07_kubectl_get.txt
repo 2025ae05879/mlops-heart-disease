@@ -1,0 +1,63 @@
+﻿> kubectl config current-context
+docker-desktop
+> kubectl get nodes -o wide
+NAME                    STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                       KERNEL-VERSION                              CONTAINER-RUNTIME
+desktop-control-plane   Ready    control-plane   12m   v1.36.1   172.20.0.2    <none>        Debian GNU/Linux 13 (trixie)   6.18.33.1-microsoft-standard-WSL2 (amd64)   containerd://2.3.1
+
+> kubectl get pods,svc,deploy -o wide
+NAME                            READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+pod/heart-api-57977d849-4rrhv   1/1     Running   0          32s   10.244.0.8   desktop-control-plane   <none>           <none>
+pod/heart-api-57977d849-tbw9g   1/1     Running   0          46s   10.244.0.7   desktop-control-plane   <none>           <none>
+
+NAME                 TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE     SELECTOR
+service/heart-api    LoadBalancer   10.96.193.242   172.20.0.5    8080:30724/TCP   7m27s   app.kubernetes.io/name=heart-api
+service/kubernetes   ClusterIP      10.96.0.1       <none>        443/TCP          12m     <none>
+
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE     CONTAINERS   IMAGES            SELECTOR
+deployment.apps/heart-api   2/2     2            2           7m27s   api          heart-api:0.2.0   app.kubernetes.io/name=heart-api
+
+> kubectl describe svc heart-api
+Name:                     heart-api
+Namespace:                default
+Labels:                   app.kubernetes.io/name=heart-api
+                          app.kubernetes.io/part-of=heart-mlops
+Annotations:              <none>
+Selector:                 app.kubernetes.io/name=heart-api
+Type:                     LoadBalancer
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.96.193.242
+IPs:                      10.96.193.242
+LoadBalancer Ingress:     172.20.0.5 (Proxy)
+Port:                     http  8080/TCP
+TargetPort:               http/TCP
+NodePort:                 http  30724/TCP
+Endpoints:                10.244.0.7:8000,10.244.0.8:8000
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Internal Traffic Policy:  Cluster
+Events:
+  Type     Reason                  Age                    From                Message
+  ----     ------                  ----                   ----                -------
+  Warning  SyncLoadBalancerFailed  6m11s (x5 over 7m28s)  service-controller  Error syncing load balancer: failed to ensure load balancer: failed to create containers kindccm-C3RS57K5523RI7ADACQGWSCN6VY5MEI63PPKJVAJ [--detach --tty --label io.x-k8s.cloud-provider-kind.cluster=desktop --label io.x-k8s.cloud-provider-kind.loadbalancer.name=desktop/default/heart-api --label io.kubernetes.pod.namespace=kube-system --net kind --init=false --hostname kindccm-C3RS57K5523RI7ADACQGWSCN6VY5MEI63PPKJVAJ --restart=on-failure --publish=0.0.0.0:80:80/TCP envoyproxy/envoy:v1.36.7 bash -c echo -en 'node:
+  cluster: cloud-provider-kind
+  id: cloud-provider-kind-id
+
+dynamic_resources:
+  cds_config:
+    resource_api_version: V3
+    path: /home/envoy/cds.yaml
+  lds_config:
+    resource_api_version: V3
+    path: /home/envoy/lds.yaml
+
+admin:
+  access_log_path: /dev/stdout
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 10000
+' > /home/envoy/envoy.yaml && touch /home/envoy/cds.yaml && touch /home/envoy/lds.yaml && while true; do envoy -c /home/envoy/envoy.yaml && break; sleep 1; done]: exit status 125
+  Normal  EnsuringLoadBalancer  4m51s (x7 over 7m28s)  service-controller  Ensuring load balancer
+  Normal  EnsuredLoadBalancer   4m50s (x2 over 5m21s)  service-controller  Ensured load balancer
+

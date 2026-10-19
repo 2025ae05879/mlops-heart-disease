@@ -1,0 +1,43 @@
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.skops
+    predict_fn: predict
+    python_version: 3.12.10
+  sklearn:
+    code: null
+    pickled_model: model.skops
+    serialization_format: skops
+    sklearn_version: 1.9.1
+    skops_trusted_types:
+    - heart.features._derived_names
+    - heart.features.add_derived_features
+    - numpy.dtype
+is_signature_from_type_hint: false
+mlflow_version: 3.17.1
+model_id: null
+model_size_bytes: 295110
+model_uuid: 24aee75b2cc44b1ab16dd7945c44775a
+prompts: null
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "double", "name": "age", "required": true}, {"type": "double",
+    "name": "trestbps", "required": true}, {"type": "double", "name": "chol", "required":
+    true}, {"type": "double", "name": "thalach", "required": true}, {"type": "double",
+    "name": "oldpeak", "required": true}, {"type": "double", "name": "ca", "required":
+    true}, {"type": "double", "name": "cp", "required": true}, {"type": "double",
+    "name": "restecg", "required": true}, {"type": "double", "name": "slope", "required":
+    true}, {"type": "double", "name": "thal", "required": true}, {"type": "double",
+    "name": "sex", "required": true}, {"type": "double", "name": "fbs", "required":
+    true}, {"type": "double", "name": "exang", "required": true}]'
+  outputs: '[{"type": "long", "required": true}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-10-17 14:23:20.901607'

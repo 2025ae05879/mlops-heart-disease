@@ -1,0 +1,20 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # heart-api behind the Kubernetes LoadBalancer (Docker Desktop publishes it on the
+  # host's localhost:8080, reachable from containers as host.docker.internal:8080).
+  # Each scrape lands on one replica; metrics carry a `pod` label so the replicas stay
+  # separate series.
+  - job_name: heart-api
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["host.docker.internal:8080"]
+        labels:
+          service: heart-api
+          env: local-k8s
+
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]

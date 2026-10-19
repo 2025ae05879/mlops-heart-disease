@@ -1,0 +1,43 @@
+{
+  "model_name": "logreg",
+  "package_version": "0.1.0",
+  "best_params": {
+    "clf__C": 0.3,
+    "clf__class_weight": null,
+    "clf__l1_ratio": 0.0
+  },
+  "metrics": {
+    "cv_accuracy_mean": 0.8593537414965986,
+    "cv_accuracy_std": 0.03375903887578882,
+    "cv_precision_mean": 0.8699084668192218,
+    "cv_precision_std": 0.05463196828980729,
+    "cv_recall_mean": 0.8201581027667985,
+    "cv_recall_std": 0.04811755824042118,
+    "cv_f1_mean": 0.8427341562452171,
+    "cv_f1_std": 0.03560067774912166,
+    "cv_roc_auc_mean": 0.910254158080245,
+    "cv_roc_auc_std": 0.025477825328424557,
+    "test_accuracy": 0.8360655737704918,
+    "test_precision": 0.8214285714285714,
+    "test_recall": 0.8214285714285714,
+    "test_f1": 0.8214285714285714,
+    "test_roc_auc": 0.9134199134199135
+  },
+  "features": [
+    "age",
+    "trestbps",
+    "chol",
+    "thalach",
+    "oldpeak",
+    "ca",
+    "cp",
+    "restecg",
+    "slope",
+    "thal",
+    "sex",
+    "fbs",
+    "exang"
+  ],
+  "selection_rationale": "Shortlist (CV ROC-AUC within 0.02 of best 0.910): logreg. Chose 'logreg' for the highest CV recall (0.820) - false negatives are the costly error for a screening tool.",
+  "quick_mode": false
+}

@@ -1,0 +1,51 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint-test-train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONIOENCODING: utf-8
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+
+      - name: Lint (ruff)
+        run: ruff check . --output-format=github
+
+      - name: Get data
+        run: python scripts/download_data.py
+
+      - name: Unit tests
+        run: pytest -v --junitxml=reports/junit.xml
+
+      - name: Train + log to MLflow
+        run: python -m heart.train 2>&1 | tee reports/train_log.txt
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heart-model-${{ github.run_number }}
+          path: |
+            models/
+            reports/
+            mlruns/
+          if-no-files-found: warn

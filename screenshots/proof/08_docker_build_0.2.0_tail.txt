@@ -1,0 +1,15 @@
+﻿#19 exporting layers
+#19 exporting layers 8.3s done
+#19 exporting manifest sha256:be313024eed4f82492e1a70c7d1fd341d13da5db233f016a45e080e7ad3c2ef7 done
+#19 exporting config sha256:6cf391969d61af358bc9635081a8ccb636228452244d1453cd27205061881122 done
+#19 exporting attestation manifest sha256:76c2f83c70ac99979a9de069fb972fd0f12a1b0193f7d9e15901c95a21064052 0.0s done
+#19 exporting manifest list sha256:80c193c64739405d9c9a1611b9aa00dc25a520ccc3b5df5894c4d3a4a333c885 0.0s done
+#19 naming to docker.io/library/heart-api:0.2.0 done
+#19 unpacking to docker.io/library/heart-api:0.2.0
+#19 unpacking to docker.io/library/heart-api:0.2.0 1.6s done
+#19 DONE 10.0s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/u4yfg9kmyhsryh38ik1lhrq2d
+IMAGE             ID             DISK USAGE   CONTENT SIZE   EXTRA
+heart-api:0.1.0   7b47ac817be0        675MB          155MB        
+heart-api:0.2.0   80c193c64739        676MB          155MB        

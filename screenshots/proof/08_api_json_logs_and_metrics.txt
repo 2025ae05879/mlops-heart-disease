@@ -1,0 +1,15 @@
+﻿> kubectl logs -l app.kubernetes.io/name=heart-api --prefix --tail=400 | findstr /predict   (structured JSON request logs, last 6)
+[pod/heart-api-57977d849-4rrhv/api] {"ts": "2026-10-17T14:45:29.719+00:00", "level": "INFO", "logger": "heart.api", "pod": "heart-api-57977d849-4rrhv", "msg": "request", "request_id": "1c179a68b7fd", "method": "POST", "path": "/predict", "status": 200, "latency_ms": 13.38, "client": "10.244.0.1", "prediction": 1, "probability": 0.9412}
+[pod/heart-api-57977d849-4rrhv/api] {"ts": "2026-10-17T14:45:32.342+00:00", "level": "INFO", "logger": "heart.api", "pod": "heart-api-57977d849-4rrhv", "msg": "request", "request_id": "06703fc0e4c6", "method": "POST", "path": "/predict", "status": 200, "latency_ms": 8.81, "client": "10.244.0.1", "prediction": 1, "probability": 0.5739}
+[pod/heart-api-57977d849-4rrhv/api] {"ts": "2026-10-17T14:45:32.877+00:00", "level": "INFO", "logger": "heart.api", "pod": "heart-api-57977d849-4rrhv", "msg": "request", "request_id": "7de3efb7c91e", "method": "POST", "path": "/predict", "status": 200, "latency_ms": 7.75, "client": "10.244.0.1", "prediction": 1, "probability": 0.7848}
+[pod/heart-api-57977d849-4rrhv/api] {"ts": "2026-10-17T14:45:33.418+00:00", "level": "INFO", "logger": "heart.api", "pod": "heart-api-57977d849-4rrhv", "msg": "request", "request_id": "7ed38d264271", "method": "POST", "path": "/predict", "status": 200, "latency_ms": 14.61, "client": "10.244.0.1", "prediction": 0, "probability": 0.2825}
+[pod/heart-api-57977d849-4rrhv/api] {"ts": "2026-10-17T14:45:33.944+00:00", "level": "INFO", "logger": "heart.api", "pod": "heart-api-57977d849-4rrhv", "msg": "request", "request_id": "7a1ccf939112", "method": "POST", "path": "/predict", "status": 200, "latency_ms": 16.84, "client": "10.244.0.1", "prediction": 0, "probability": 0.2265}
+[pod/heart-api-57977d849-4rrhv/api] {"ts": "2026-10-17T14:45:37.623+00:00", "level": "INFO", "logger": "heart.api", "pod": "heart-api-57977d849-4rrhv", "msg": "request", "request_id": "51c02234a733", "method": "POST", "path": "/predict", "status": 200, "latency_ms": 10.57, "client": "10.244.0.1", "prediction": 0, "probability": 0.1537}
+
+> GET http://127.0.0.1:8080/metrics (excerpt from whichever replica answered)
+heart_api_requests_total{method="POST",path="/predict",pod="heart-api-57977d849-tbw9g",status="200"} 63.0
+heart_api_requests_total{method="POST",path="/predict",pod="heart-api-57977d849-tbw9g",status="422"} 3.0
+heart_api_request_duration_seconds_count{method="POST",path="/predict",pod="heart-api-57977d849-tbw9g"} 66.0
+heart_api_predictions_total{label="no heart disease",pod="heart-api-57977d849-tbw9g"} 36.0
+heart_api_predictions_total{label="heart disease",pod="heart-api-57977d849-tbw9g"} 27.0
+heart_api_model_loaded{pod="heart-api-57977d849-tbw9g"} 1.0

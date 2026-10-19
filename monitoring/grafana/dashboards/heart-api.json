@@ -1,0 +1,667 @@
+{
+  "uid": "heart-api-ops",
+  "title": "Heart API - model service health",
+  "tags": [
+    "heart",
+    "mlops"
+  ],
+  "timezone": "browser",
+  "refresh": "10s",
+  "schemaVersion": 41,
+  "version": 1,
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Model loaded (all replicas)",
+      "description": "1 = every replica that answered a scrape in the last minute has the model in memory",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "heart-prom"
+          },
+          "expr": "min(max_over_time(heart_api_model_loaded[1m]))",
+          "legendFormat": "",
+          "refId": "A",
+          "range": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "area",
+        "textMode": "value"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "id": 1,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "heart-prom"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 5,
+        "h": 4
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Predictions served (total)",
+      "description": "Sum of per-pod prediction counters",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "heart-prom"
+          },
+          "expr": "sum(max_over_time(heart_api_predictions_total{job=\"heart-api\"}[2m]))",
+          "legendFormat": "",
+          "refId": "A",
+          "range": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "area",
+        "textMode": "value"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "id": 2,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "heart-prom"
+      },
+      "gridPos": {
+        "x": 5,
+        "y": 0,
+        "w": 5,
+        "h": 4
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Share predicted 'heart disease'",
+      "description": "Drift hint: the training data was 46% positive; a big move away from that is worth a look",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "heart-prom"
+          },
+          "expr": "sum(max_over_time(heart_api_predictions_total{job=\"heart-api\"}{label=\"heart disease\"}[2m])) / sum(max_over_time(heart_api_predictions_total{job=\"heart-api\"}[2m]))",
+          "legendFormat": "",
+          "refId": "A",
+          "range": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "area",
+        "textMode": "value"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.6
+              }
+            ]
+          },
+          "decimals": 1
+        },
+        "overrides": []
+      },
+      "id": 3,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "heart-prom"
+      },
+      "gridPos": {
+        "x": 10,
+        "y": 0,
+        "w": 5,
+        "h": 4
+      }
+    },
+    {
+      "type": "stat",
+      "title": "/predict error rate (5m)",
+      "description": "",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "heart-prom"
+          },
+          "expr": "(sum(rate(heart_api_requests_total{job=\"heart-api\"}{path=\"/predict\",status=~\"4..|5..\"}[5m])) or vector(0)) / sum(rate(heart_api_requests_total{job=\"heart-api\"}{path=\"/predict\"}[5m]))",
+          "legendFormat": "",
+          "refId": "A",
+          "range": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "area",
+        "textMode": "value"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.02
+              },
+              {
+                "color": "red",
+                "value": 0.1
+              }
+            ]
+          },
+          "decimals": 1
+        },
+        "overrides": []
+      },
+      "id": 4,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "heart-prom"
+      },
+      "gridPos": {
+        "x": 15,
+        "y": 0,
+        "w": 5,
+        "h": 4
+      }
+    },
+    {
+      "type": "stat",
+      "title": "p95 latency /predict (5m)",
+      "description": "",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "heart-prom"
+          },
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(heart_api_request_duration_seconds_bucket{job=\"heart-api\",path=\"/predict\"}[5m])))",
+          "legendFormat": "",
+          "refId": "A",
+          "range": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "area",
+        "textMode": "value"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.1
+              },
+              {
+                "color": "red",
+                "value": 0.5
+              }
+            ]
+          },
+          "decimals": 3
+        },
+        "overrides": []
+      },
+      "id": 5,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "heart-prom"
+      },
+      "gridPos": {
+        "x": 20,
+        "y": 0,
+        "w": 4,
+        "h": 4
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Request rate by endpoint (req/s)",
+      "description": "",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "heart-prom"
+          },
+          "expr": "sum by (path) (rate(heart_api_requests_total{job=\"heart-api\"}{path!=\"/metrics\"}[1m]))",
+          "legendFormat": "{{path}}",
+          "refId": "A",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 25,
+            "stacking": {
+              "mode": "none"
+            },
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "id": 6,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "heart-prom"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 12,
+        "h": 8
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Latency /predict - p50 / p95 / p99",
+      "description": "",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "heart-prom"
+          },
+          "expr": "histogram_quantile(0.5, sum by (le) (rate(heart_api_request_duration_seconds_bucket{job=\"heart-api\",path=\"/predict\"}[1m])))",
+          "legendFormat": "p50",
+          "refId": "A",
+          "range": true
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "heart-prom"
+          },
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(heart_api_request_duration_seconds_bucket{job=\"heart-api\",path=\"/predict\"}[1m])))",
+          "legendFormat": "p95",
+          "refId": "B",
+          "range": true
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "heart-prom"
+          },
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(heart_api_request_duration_seconds_bucket{job=\"heart-api\",path=\"/predict\"}[1m])))",
+          "legendFormat": "p99",
+          "refId": "C",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 25,
+            "stacking": {
+              "mode": "none"
+            },
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "id": 7,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "heart-prom"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 4,
+        "w": 12,
+        "h": 8
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Error rate on /predict (4xx + 5xx share)",
+      "description": "Validation failures (422) count as errors: they usually mean a client is sending bad payloads",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "heart-prom"
+          },
+          "expr": "(sum(rate(heart_api_requests_total{job=\"heart-api\"}{path=\"/predict\",status=~\"4..|5..\"}[1m])) or vector(0)) / sum(rate(heart_api_requests_total{job=\"heart-api\"}{path=\"/predict\"}[1m]))",
+          "legendFormat": "error share",
+          "refId": "A",
+          "range": true
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "heart-prom"
+          },
+          "expr": "sum by (status) (rate(heart_api_requests_total{job=\"heart-api\"}{path=\"/predict\"}[1m]))",
+          "legendFormat": "status {{status}} (req/s)",
+          "refId": "B",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 25,
+            "stacking": {
+              "mode": "none"
+            },
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "id": 8,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "heart-prom"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 12,
+        "w": 12,
+        "h": 8
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Predictions by class (per minute)",
+      "description": "",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "heart-prom"
+          },
+          "expr": "sum by (label) (rate(heart_api_predictions_total{job=\"heart-api\"}[1m])) * 60",
+          "legendFormat": "{{label}}",
+          "refId": "A",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "bars",
+            "lineWidth": 2,
+            "fillOpacity": 25,
+            "stacking": {
+              "mode": "normal"
+            },
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "id": 9,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "heart-prom"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 12,
+        "w": 12,
+        "h": 8
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Load balancing - requests per replica (req/s)",
+      "description": "Both replicas behind the LoadBalancer should share traffic",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "heart-prom"
+          },
+          "expr": "sum by (pod) (rate(heart_api_requests_total{job=\"heart-api\"}{path=\"/predict\"}[1m]))",
+          "legendFormat": "{{pod}}",
+          "refId": "A",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 25,
+            "stacking": {
+              "mode": "none"
+            },
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "id": 10,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "heart-prom"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 20,
+        "w": 12,
+        "h": 8
+      }
+    },
+    {
+      "type": "bargauge",
+      "title": "Predicted risk distribution (selected range)",
+      "description": "How many requests fell in each P(disease) bucket",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "heart-prom"
+          },
+          "expr": "sum by (le) (increase(heart_api_predicted_probability_bucket{job=\"heart-api\"}[$__range]))",
+          "legendFormat": "<= {{le}}",
+          "refId": "A",
+          "range": false,
+          "format": "heatmap",
+          "instant": true
+        }
+      ],
+      "options": {
+        "orientation": "horizontal",
+        "displayMode": "gradient",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "id": 11,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "heart-prom"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 20,
+        "w": 12,
+        "h": 8
+      }
+    }
+  ],
+  "description": "Traffic, latency, errors and prediction mix for the heart-disease classifier on Docker Desktop K8s"
+}

@@ -1,0 +1,14 @@
+﻿> GET /api/v1/targets?state=active
+{"status":"success","data":{"activeTargets":[{"discoveredLabels":{"__address__":"host.docker.internal:8080","__metrics_path__":"/metrics","__scheme__":"http","__scrape_interval__":"5s","__scrape_timeout__":"5s","env":"local-k8s","job":"heart-api","service":"heart-api"},"labels":{"env":"local-k8s","instance":"host.docker.internal:8080","job":"heart-api","service":"heart-api"},"scrapePool":"heart-api","scrapeUrl":"http://host.docker.internal:8080/metrics","globalUrl":"http://host.docker.internal:8080/metrics","lastError":"","lastScrape":"2026-10-17T14:45:59.228746719Z","lastScrapeDuration":0.015942057,"health":"up","scrapeInterval":"5s","scrapeTimeout":"5s"},{"discoveredLabels":{"__address__":"localhost:9090","__metrics_path__":"/metrics","__scheme__":"http","__scrape_interval__":"5s","__scrape_timeout__":"5s","job":"prometheus"},"labels":{"instance":"localhost:9090","job":"prometheus"},"scrapePool":"prometheus","scrapeUrl":"http://localhost:9090/metrics","globalUrl":"http://36ba36636a75:9090/metrics","lastError":"","lastScrape":"2026-10-17T14:46:01.530735374Z","lastScrapeDuration":0.003206223,"health":"up","scrapeInterval":"5s","scrapeTimeout":"5s"}],"droppedTargets":[],"droppedTargetCounts":null}}
+> query: up{job="heart-api"}
+{"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"up","env":"local-k8s","instance":"host.docker.internal:8080","job":"heart-api","service":"heart-api"},"value":[1792248361.699,"1"]}]}}
+> query: sum by (pod) (max_over_time(heart_api_requests_total{path="/predict"}[10m]))
+{"status":"success","data":{"resultType":"vector","result":[{"metric":{"pod":"heart-api-57977d849-4rrhv"},"value":[1792248361.744,"56"]},{"metric":{"pod":"heart-api-57977d849-tbw9g"},"value":[1792248361.744,"7"]}]}}
+> query: sum by (label) (max_over_time(heart_api_predictions_total[10m]))
+{"status":"success","data":{"resultType":"vector","result":[{"metric":{"label":"heart disease"},"value":[1792248361.781,"27"]},{"metric":{"label":"no heart disease"},"value":[1792248361.781,"34"]}]}}
+> query: sum by (status) (max_over_time(heart_api_requests_total{path="/predict"}[10m]))
+{"status":"success","data":{"resultType":"vector","result":[{"metric":{"status":"200"},"value":[1792248361.814,"61"]},{"metric":{"status":"422"},"value":[1792248361.814,"2"]}]}}
+> query: histogram_quantile(0.95, sum by (le) (rate(heart_api_request_duration_seconds_bucket{path="/predict"}[5m])))
+{"status":"success","data":{"resultType":"vector","result":[{"metric":{},"value":[1792248361.854,"0.02497145495990015"]}]}}
+> query: sum(rate(heart_api_requests_total{path="/predict"}[5m]))
+{"status":"success","data":{"resultType":"vector","result":[{"metric":{},"value":[1792248361.896,"0.2066283400595891"]}]}}

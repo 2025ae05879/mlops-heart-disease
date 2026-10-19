@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: heart-api
+  labels:
+    app.kubernetes.io/name: heart-api
+    app.kubernetes.io/part-of: heart-mlops
+spec:
+  type: LoadBalancer          # Docker Desktop publishes LoadBalancer services on localhost
+  selector:
+    app.kubernetes.io/name: heart-api
+  ports:
+    - name: http
+      # 8080 instead of 80: on the dev laptop localhost:80 is already served by another
+      # local web app (RMEye Omni), so Docker Desktop cannot publish the LB on 80.
+      port: 8080
+      targetPort: http

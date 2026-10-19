@@ -1,0 +1,38 @@
+﻿> ruff check .
+[1;32mAll checks passed![0m
+
+> pytest -v
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.1.1, pluggy-1.7.0 -- C:\Users\jsaish.pamarti\Documents\mlops-heart-disease\.venv\Scripts\python.exe
+rootdir: C:\Users\jsaish.pamarti\Documents\mlops-heart-disease
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.15.1, platformdirs-4.13.3
+collecting ... collected 23 items
+
+tests/test_api.py::test_predict_function PASSED                          [  4%]
+tests/test_api.py::test_predict_function_rejects_missing_fields PASSED   [  8%]
+tests/test_api.py::test_health PASSED                                    [ 13%]
+tests/test_api.py::test_predict_endpoint PASSED                          [ 17%]
+tests/test_api.py::test_predict_endpoint_allows_missing_ca_thal PASSED   [ 21%]
+tests/test_api.py::test_predict_endpoint_validates_input PASSED          [ 26%]
+tests/test_api.py::test_health_degraded_without_model PASSED             [ 30%]
+tests/test_api.py::test_metrics_exposes_request_and_prediction_counters PASSED [ 34%]
+tests/test_api.py::test_request_is_logged_as_json PASSED                 [ 39%]
+tests/test_data.py::test_target_is_binarised PASSED                      [ 43%]
+tests/test_data.py::test_missing_ca_thal_kept_as_nan PASSED              [ 47%]
+tests/test_data.py::test_out_of_domain_codes_become_nan PASSED           [ 52%]
+tests/test_data.py::test_question_mark_parsed_as_missing PASSED          [ 56%]
+tests/test_data.py::test_missing_column_raises PASSED                    [ 60%]
+tests/test_data.py::test_stratified_split_keeps_ratio PASSED             [ 65%]
+tests/test_features.py::test_derived_features_values PASSED              [ 69%]
+tests/test_features.py::test_preprocessor_output_is_finite_and_shaped PASSED [ 73%]
+tests/test_features.py::test_unseen_category_is_ignored PASSED           [ 78%]
+tests/test_features.py::test_scaled_numeric_columns_are_standardised PASSED [ 82%]
+tests/test_model.py::test_pipeline_fits_and_predicts_probabilities PASSED [ 86%]
+tests/test_model.py::test_three_model_families_with_grids PASSED         [ 91%]
+tests/test_model.py::test_selection_prefers_recall_within_auc_band PASSED [ 95%]
+tests/test_model.py::test_quick_training_end_to_end PASSED               [100%]
+
+============================= 23 passed in 20.87s =============================
+

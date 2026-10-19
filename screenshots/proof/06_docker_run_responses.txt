@@ -1,0 +1,10 @@
+﻿> docker ps (heart-api-local)
+10f4ee0c86ab heart-api:0.1.0 Up 8 seconds (healthy) 0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+> GET http://localhost:8000/health
+{"status":"ok","model_loaded":true,"model_path":"/app/models/model.joblib","version":"0.1.0"}
+> POST /predict samples/sample_request.json
+{"prediction":1,"label":"heart disease","probability_disease":0.9671,"confidence":0.9671}
+> POST /predict samples/sample_request_low_risk.json
+{"prediction":0,"label":"no heart disease","probability_disease":0.0243,"confidence":0.9757}
+> POST /predict invalid (cp=9) -> expect 422
+HTTP 422

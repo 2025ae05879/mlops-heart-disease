@@ -1,0 +1,43 @@
+# Pinned to the versions installed and verified in the project venv (Python 3.12.10).
+# Install: python -m pip install -r requirements.txt && python -m pip install -e .
+
+# core ML
+numpy==2.5.4
+pandas==3.0.6
+scipy==1.18.1
+scikit-learn==1.9.1
+joblib==1.6.0
+
+# data acquisition
+requests==2.34.2
+ucimlrepo==0.0.7
+
+# plots / reports
+matplotlib==3.11.2
+seaborn==0.13.2
+tabulate==0.10.0
+
+# notebook execution
+jupyter==1.1.1
+ipykernel==7.4.0
+nbconvert==7.17.2
+nbformat==5.11.1
+
+# experiment tracking + model packaging
+mlflow==3.17.1
+skops==0.16.0
+
+# serving (FastAPI app, phase 6 container reuses these)
+fastapi==0.143.3
+pydantic==2.14.1
+uvicorn==0.54.0
+prometheus_client==0.26.0
+httpx==0.28.1
+
+# dev / CI
+pytest==9.1.1
+ruff==0.17.1
+
+# report generation (scripts/build_report.py; PDF step needs MS Word on Windows/macOS)
+python-docx==1.2.0
+docx2pdf==0.1.8

@@ -1,0 +1,15 @@
+﻿> GET http://localhost:8080/health  (k8s LoadBalancer, svc port 8080 -> 8000)
+{"status":"ok","model_loaded":true,"model_path":"/app/models/model.joblib","version":"0.2.0","pod":"heart-api-57977d849-tbw9g"}
+{"status":"ok","model_loaded":true,"model_path":"/app/models/model.joblib","version":"0.2.0","pod":"heart-api-57977d849-tbw9g"}
+> POST http://localhost:8080/predict samples/sample_request.json
+HTTP/1.1 200 OK
+date: Sat, 17 Oct 2026 14:41:03 GMT
+server: uvicorn
+content-length: 89
+content-type: application/json
+x-request-id: 1e34d168d2ab
+
+{"prediction":1,"label":"heart disease","probability_disease":0.9671,"confidence":0.9671}
+
+> POST http://localhost:8080/predict samples/sample_request_low_risk.json
+{"prediction":0,"label":"no heart disease","probability_disease":0.0243,"confidence":0.9757}
