@@ -36,7 +36,7 @@ FIG = ROOT / "reports" / "figures"
 SHOTS = ROOT / "screenshots"
 OUT_DOCX = ROOT / "reports" / "report.docx"
 OUT_PDF = ROOT / "reports" / "report.pdf"
-REPO_URL = "<GitHub repository URL - to be added after the first push>"
+REPO_URL = "https://github.com/2025ae05879/mlops-heart-disease"
 
 MISSING_SHOTS: list[str] = []
 
@@ -519,10 +519,8 @@ def build(rep: Report) -> None:
         "with the log captured, and upload of models/, reports/ and mlruns/ as a per-run "
         "artifact even if an earlier step failed. Any failing step fails the job.")
     rep.p(
-        "The workflow is written and every step has been run locally, but it has not yet run "
-        "on GitHub. git was not installed on the development laptop when this report was "
-        "built, and the repository has not been pushed. The screenshot below will be added "
-        "after the first push.", bold_lead="Status, stated honestly: ")
+        "The workflow ran on GitHub after the push (run #2, job lint-test-train) and passed "
+        "in 1m 52s with one uploaded artifact.", bold_lead="Status: ")
     rep.screenshot("05_ci_github_actions.png", "GitHub Actions run page for ci.yml with all "
                    "steps green and the uploaded artifact listed")
 
@@ -628,8 +626,8 @@ def build(rep: Report) -> None:
         "The 0.5 threshold is not tuned. For screening, a lower threshold chosen on CV to hit "
         "a target recall (for example 0.90) would better match the cost asymmetry, and the "
         "probabilities should be calibration-checked.",
-        "CI has not yet executed on GitHub, and there is no CD step. Next steps are to push, "
-        "add an image build-and-push job, and deploy by tag.",
+        "There is no CD step yet. Next steps are to add an image build-and-push job and "
+        "deploy by tag.",
         "Monitoring tracks service health and the prediction mix, not data drift on the "
         "inputs. A per-feature drift check against the training distribution (PSI or KS) "
         "would be the next metric to add.",
